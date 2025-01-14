@@ -29,6 +29,7 @@ lzma_tokio = ["liblzma/tokio"]
 # flate2 feature transitivity
 gz_zlib = ["flate2/zlib"]
 gz_zlib-ng-compat = ["flate2/zlib-ng-compat"]
+gz_zlib-ng = ["flate2/zlib-ng"]
 gz_cloudflare_zlib = ["flate2/cloudflare_zlib"]
 gz_rust_backend = ["flate2/rust_backend"]
 
