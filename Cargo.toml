@@ -1,6 +1,6 @@
 [package]
 name = "niffler-temp"
-version = "2.7.0"
+version = "2.7.1"
 authors = [
   "Pierre Marijon <pierre@marijon.fr>",
   "Luiz Irber <luiz.irber@gmail.com>",
@@ -86,6 +86,7 @@ denylist = [
 
   # flate2 feature transitivity
   "gz_zlib",
+  "gz_zlib-ng",
   "gz_zlib-ng-compat",
   "gz_cloudflare_zlib",
   "gz_rust_backend",
