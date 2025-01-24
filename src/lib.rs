@@ -12,24 +12,24 @@
 //! # Example
 //!
 //! ```rust
-//! use niffler::{Error, compression};
+//! use niffler_temp::{Error, compression};
 //! # fn main() -> Result<(), Error> {
 //! # #[cfg(feature = "gz")] {
 //! let mut buffer = Vec::new();
 //!
 //! {
-//!   let mut writer = niffler::get_writer(Box::new(&mut buffer), compression::Format::Gzip, niffler::Level::Nine)?;
+//!   let mut writer = niffler_temp::get_writer(Box::new(&mut buffer), compression::Format::Gzip, niffler_temp::Level::Nine)?;
 //!   writer.write_all(b"hello")?;
 //! }
 //!
 //! # assert_eq!(&buffer, &[0x1f, 0x8b, 8, 0, 0, 0, 0, 0, 2, 255, 203, 72, 205, 201, 201, 7, 0, 134, 166, 16, 54, 5, 0, 0, 0]);
 //!
-//! let (mut reader, compression) = niffler::get_reader(Box::new(&buffer[..]))?;
+//! let (mut reader, compression) = niffler_temp::get_reader(Box::new(&buffer[..]))?;
 //!
 //! let mut contents = String::new();
 //! reader.read_to_string(&mut contents)?;
 //!
-//! assert_eq!(compression, niffler::compression::Format::Gzip);
+//! assert_eq!(compression, niffler_temp::compression::Format::Gzip);
 //! assert_eq!(contents, "hello");
 //! # }
 //! # Ok(())
@@ -49,9 +49,9 @@
 //! niffler = { version = "2.2.0", default-features = false, features = ["gz"] }
 //! ```
 //!
-//! You can still use `niffler::sniff()` to find what is the compression format,
+//! You can still use `niffler_temp::sniff()` to find what is the compression format,
 //! even if any feature is disabled.
-//! But if you try to use `niffler::get_reader` for a disabled feature,
+//! But if you try to use `niffler_temp::get_reader` for a disabled feature,
 //! it will throw a runtime error.
 //!
 //! ## Backends features

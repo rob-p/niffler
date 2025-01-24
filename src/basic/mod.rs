@@ -16,7 +16,7 @@ use crate::level::Level;
 ///
 /// # Example
 /// ```
-/// # fn main() -> Result<(), niffler::Error> {
+/// # fn main() -> Result<(), niffler_temp::Error> {
 ///
 /// let data = vec![
 ///         0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0xf3, 0x54, 0xcf, 0x55,
@@ -24,12 +24,12 @@ use crate::level::Level;
 ///         0xca, 0x2c, 0xe0, 0x02, 0x00, 0x45, 0x7c, 0xf4, 0x10, 0x15, 0x00, 0x00, 0x00
 ///         ];
 ///
-/// let (mut reader, compression) = niffler::sniff(Box::new(&data[..]))?;
+/// let (mut reader, compression) = niffler_temp::sniff(Box::new(&data[..]))?;
 ///
 /// let mut contents = Vec::new();
 /// reader.read_to_end(&mut contents).expect("Error durring file reading");
 ///
-/// assert_eq!(compression, niffler::compression::Format::Gzip);
+/// assert_eq!(compression, niffler_temp::compression::Format::Gzip);
 /// assert_eq!(contents, data);
 /// # Ok(())
 /// # }
@@ -54,7 +54,7 @@ pub fn sniff<'a>(
 ///
 /// # Example
 /// ```
-/// use niffler::{Error, get_reader};
+/// use niffler_temp::{Error, get_reader};
 /// # fn main() -> Result<(), Error> {
 ///
 /// let probably_compress_stream = std::io::Cursor::new(vec![
@@ -64,12 +64,12 @@ pub fn sniff<'a>(
 ///         ]);
 ///
 /// # #[cfg(feature = "gz")] {
-/// let (mut reader, compression) = niffler::get_reader(Box::new(probably_compress_stream))?;
+/// let (mut reader, compression) = niffler_temp::get_reader(Box::new(probably_compress_stream))?;
 ///
 /// let mut contents = String::new();
 /// reader.read_to_string(&mut contents).expect("Error durring file reading");
 ///
-/// assert_eq!(compression, niffler::compression::Format::Gzip);
+/// assert_eq!(compression, niffler_temp::compression::Format::Gzip);
 /// assert_eq!(contents, "I'm compress in gzip\n");
 /// # }
 /// # Ok(())
@@ -96,13 +96,13 @@ pub fn get_reader<'a>(
 /// # Example
 /// ```
 /// use std::io::Read;
-/// use niffler::{Error, get_writer, compression};
+/// use niffler_temp::{Error, get_writer, compression};
 /// # fn main() -> Result<(), Error> {
 ///
 /// # #[cfg(feature = "gz")] {
 /// let mut buffer = vec![];
 /// {
-///   let mut writer = niffler::get_writer(Box::new(&mut buffer), compression::Format::Gzip, niffler::Level::One)?;
+///   let mut writer = niffler_temp::get_writer(Box::new(&mut buffer), compression::Format::Gzip, niffler_temp::Level::One)?;
 ///   writer.write_all("I'm compress in gzip\n".as_bytes())?
 /// }
 ///
@@ -134,18 +134,18 @@ pub fn get_writer<'a>(
 
 /// Open a possibly compressed file and decompress it transparently.
 /// ```
-/// use niffler::{Error, compression};
+/// use niffler_temp::{Error, compression};
 /// # fn main() -> Result<(), Error> {
 ///
 /// # #[cfg(feature = "gz")] {
 /// # let file = tempfile::NamedTempFile::new()?;
 ///
 /// # {
-/// #   let mut writer = niffler::to_path(file.path(), compression::Format::Gzip, niffler::Level::Nine)?;
+/// #   let mut writer = niffler_temp::to_path(file.path(), compression::Format::Gzip, niffler_temp::Level::Nine)?;
 /// #   writer.write_all(b"hello")?;
 /// # }
 ///
-/// let (mut reader, format) = niffler::from_path(file.path())?;
+/// let (mut reader, format) = niffler_temp::from_path(file.path())?;
 ///
 /// let mut contents = vec![];
 /// reader.read_to_end(&mut contents);
@@ -164,18 +164,18 @@ pub fn from_path<'a, P: AsRef<Path>>(
 
 /// Create a file with specific compression format.
 /// ```
-/// use niffler::{Error, compression};
+/// use niffler_temp::{Error, compression};
 /// # fn main() -> Result<(), Error> {
 ///
 /// # #[cfg(feature = "gz")] {
 /// # let file = tempfile::NamedTempFile::new()?;
 ///
 /// # {
-/// let mut writer = niffler::to_path(file.path(), compression::Format::Gzip, niffler::Level::Nine)?;
+/// let mut writer = niffler_temp::to_path(file.path(), compression::Format::Gzip, niffler_temp::Level::Nine)?;
 /// writer.write_all(b"hello")?;
 /// # }
 ///
-/// # let (mut reader, format) = niffler::from_path(&file.path())?;
+/// # let (mut reader, format) = niffler_temp::from_path(&file.path())?;
 /// # let mut contents = vec![];
 /// # reader.read_to_end(&mut contents)?;
 /// # assert_eq!(&contents, b"hello");

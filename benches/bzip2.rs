@@ -11,7 +11,7 @@ fn read_in_ram(c: &mut Criterion) {
     let mut g = c.benchmark_group("Bzip reads");
 
     g.bench_function("niffler", |b| {
-        b.iter(|| read_all_stream(niffler::get_reader(Box::new(BZIP_FILE)).unwrap().0))
+        b.iter(|| read_all_stream(niffler_temp::get_reader(Box::new(BZIP_FILE)).unwrap().0))
     });
     g.bench_function("bzip2", |b| {
         b.iter(|| read_all_stream(Box::new(bzip2::read::BzDecoder::new(BZIP_FILE))))
@@ -26,10 +26,10 @@ fn write_in_ram(c: &mut Criterion) {
     g.bench_function("niffler", |b| {
         b.iter(|| {
             write_all_data(
-                niffler::get_writer(
+                niffler_temp::get_writer(
                     Box::new(&mut out),
-                    niffler::compression::Format::Bzip,
-                    niffler::level::Level::One,
+                    niffler_temp::compression::Format::Bzip,
+                    niffler_temp::level::Level::One,
                 )
                 .unwrap(),
                 BASIC_FILE,
@@ -56,15 +56,15 @@ fn read_on_disk(c: &mut Criterion) {
     // fill file
     {
         let wfile = compress_file.reopen().unwrap();
-        let mut writer = niffler::get_writer(
+        let mut writer = niffler_temp::get_writer(
             Box::new(wfile),
-            niffler::compression::Format::Bzip,
-            niffler::level::Level::One,
+            niffler_temp::compression::Format::Bzip,
+            niffler_temp::level::Level::One,
         )
         .unwrap();
 
         for _ in 0..(8 * 1024) {
-            writer.write(&[42]).unwrap();
+            writer.write_all(&[42]).unwrap();
         }
 
         writer.flush().unwrap();
@@ -77,7 +77,7 @@ fn read_on_disk(c: &mut Criterion) {
             compress_file.seek(std::io::SeekFrom::Start(0)).unwrap();
 
             read_all_stream(
-                niffler::get_reader(Box::new(compress_file.as_file()))
+                niffler_temp::get_reader(Box::new(compress_file.as_file()))
                     .unwrap()
                     .0,
             );
@@ -103,10 +103,10 @@ fn write_on_disk(c: &mut Criterion) {
     g.bench_function("niffler", |b| {
         b.iter(|| {
             let wfile = compress_file.reopen().unwrap();
-            let mut writer = niffler::get_writer(
+            let mut writer = niffler_temp::get_writer(
                 Box::new(wfile),
-                niffler::compression::Format::Bzip,
-                niffler::level::Level::One,
+                niffler_temp::compression::Format::Bzip,
+                niffler_temp::level::Level::One,
             )
             .unwrap();
 
