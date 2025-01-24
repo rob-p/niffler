@@ -1,6 +1,6 @@
 [package]
 name = "niffler-temp"
-version = "2.6.1"
+version = "2.7.0"
 authors = [
   "Pierre Marijon <pierre@marijon.fr>",
   "Luiz Irber <luiz.irber@gmail.com>",

@@ -467,7 +467,7 @@ dependencies = [
 
 [[package]]
 name = "niffler-temp"
-version = "2.6.1"
+version = "2.7.0"
 dependencies = [
  "bgzip",
  "bzip2",
